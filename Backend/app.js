@@ -49,26 +49,4 @@ app.get("/", (req, res) => {
   res.send("Hello from node server !");
 });
 
-// Modifier un livre
-
-app.put("/api/books/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    // Option pour renvoyer le livre mis à jour et valider les données
-    const options = { new: true, runValidators: true };
-
-    // Mettre à jour le livre par ID
-    const book = await Book.findByIdAndUpdate(id, req.body, options);
-
-    // Vérifiez si le livre a été trouvé et mis à jour
-    if (!book) {
-      return res.status(404).json({ message: "Livre non trouvé" });
-    }
-    res.status(200).json({ message: "Livre modifié!", book });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
 module.exports = app;

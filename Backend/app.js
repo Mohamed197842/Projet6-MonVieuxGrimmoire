@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const Book = require("./models/book.js");
-const bookRoutes = require("./routes/books.route.js");
 
 // Load environment variables from a .env file
 require("dotenv").config();
@@ -43,10 +42,9 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 //Routes
+const bookRoutes = require("./routes/books.route.js");
+const userRoutes = require("./routes/user.route.js");
+
 app.use("/api/books", bookRoutes);
-
-app.get("/", (req, res) => {
-  res.send("Hello from node server !");
-});
-
+app.use("/api/auth", userRoutes);
 module.exports = app;

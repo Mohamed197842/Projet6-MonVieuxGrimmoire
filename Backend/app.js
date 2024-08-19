@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 const app = express();
 const Book = require("./models/book.js");
 
@@ -45,6 +46,12 @@ app.use(express.json());
 const bookRoutes = require("./routes/books.route.js");
 const userRoutes = require("./routes/user.route.js");
 
+// Toutes les routes définies dans booksRoutes seront accessibles sous l'URL /api/books/
 app.use("/api/books", bookRoutes);
+
+// Toutes les routes définies dans usersRoutes seront accessibles sous l'URL /api/auth/
 app.use("/api/auth", userRoutes);
+
+// Configuration d'un point d'accès pour gérer les requêtes vers le répertoire 'images', afin d'y accéder via l'URL /images/exemple.jpg
+app.use("/images", express.static(path.join(__dirname, "images")));
 module.exports = app;

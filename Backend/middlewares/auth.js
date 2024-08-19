@@ -18,11 +18,13 @@ module.exports = (req, res, next) => {
     }
 
     // Vérifier le token en utilisant la clé secrète
-    const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+    const decodedToken = jwt.verify(token, "RANDOM_SECRET_TOKEN");
     const userId = decodedToken.userId;
 
     // Attacher l'ID utilisateur à l'objet de requête
-    req.auth = { userId };
+    req.auth = {
+      userId: userId,
+    };
     next();
   } catch (error) {
     // Retourner une erreur 403 si le token est invalide ou expiré

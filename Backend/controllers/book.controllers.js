@@ -2,6 +2,7 @@ const Book = require("../models/book");
 const path = require("path");
 const fs = require("fs");
 
+//liste de tout les livres
 const getAllBooks = async (req, res) => {
   try {
     const books = await Book.find({});
@@ -11,6 +12,7 @@ const getAllBooks = async (req, res) => {
   }
 };
 
+// un seul livres
 const getOneBook = async (req, res) => {
   try {
     const { id } = req.params;
@@ -21,15 +23,40 @@ const getOneBook = async (req, res) => {
   }
 };
 
-const createBook = async (req, res) => {
+// les 3 trois livres les meiux notées
+const getBestRating = async (req, res) => {
   try {
-    const book = await Book.create(req.body);
-    res.status(200).json(book);
+    const books = await Book.find().sort({ averageRating: -1 }).limit(3); // Seulement 3 livres
+    res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+// Ajouter un livre
+const createBook = async (req, res) => {
+  try {
+    const bookObject = JSON.parse(req.body.book);
+    delete bookObject._id;
+    delete bookObject._userId;
+
+    const book = new Book({
+      ...bookObject,
+      userId: req.auth.userId,
+      imageUrl: `${req.protocol}://${req.get("host")}/images/${
+        req.file.compressedFilename
+      }`,
+      averageRating: bookObject.ratings[0].grade,
+    });
+
+    await book.save();
+    res.status(201).json({ message: "Livre enregistré !" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Modifier un livre
 const modifyBook = async (req, res) => {
   // Créez l'objet de mise à jour du livre
   const bookObject = req.file
@@ -127,6 +154,7 @@ const deleteBook = async (req, res) => {
 module.exports = {
   getAllBooks,
   getOneBook,
+  getBestRating,
   createBook,
   modifyBook,
   deleteBook,

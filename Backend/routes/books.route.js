@@ -8,6 +8,7 @@ const {
   createBook,
   modifyBook,
   deleteBook,
+  postRating,
 } = require("../controllers/book.controllers");
 const router = express.Router();
 
@@ -15,9 +16,10 @@ router.get("/", getAllBooks);
 router.get("/:id", getOneBook);
 router.get("/bestrating", getBestRating);
 
-router.post("/", auth, createBook);
+router.post("/", auth, multer, createBook);
+router.post("/:id/rating", auth, postRating);
 
-router.put("/:id", auth, modifyBook);
+router.put("/:id", auth, multer, modifyBook);
 
 router.delete("/:id", auth, deleteBook);
 

@@ -2,15 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const app = express();
-const Book = require("./models/book.js");
 
-// Load environment variables from a .env file
-require("dotenv").config();
-
-// Récupération des informations de connexion à la base de données depuis les variables d'environnement
-const dataServer = process.env.DB_SERVER;
-const dataUserName = process.env.DB_USER_NAME;
-const dataPassword = process.env.DB_PASSWORD;
+//Routes
+const bookRoutes = require("./routes/books.route.js");
+const userRoutes = require("./routes/user.route.js");
 
 // Connexion à MongoDB via Mongoose
 mongoose
@@ -41,10 +36,6 @@ app.use((req, res, next) => {
 
 // Middleware used to analyze the body of incoming requests in JSON format
 app.use(express.json());
-
-//Routes
-const bookRoutes = require("./routes/books.route.js");
-const userRoutes = require("./routes/user.route.js");
 
 // Toutes les routes définies dans booksRoutes seront accessibles sous l'URL /api/books/
 app.use("/api/books", bookRoutes);

@@ -63,7 +63,7 @@ const modifyBook = async (req, res) => {
     const bookObject = req.file
       ? {
           ...JSON.parse(req.body.book),
-          imageUrl: `${req.protocol}://${req.get("host")}/uploads/${
+          imageUrl: `${req.protocol}://${req.get("host")}/images/${
             req.file.filename
           }`, // Assurez-vous que le chemin est correct
         }

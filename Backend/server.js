@@ -52,6 +52,5 @@ const createServerOnPort = (port) => {
   server.listen(port);
 };
 
-// Démarrez le serveur sur les deux ports
-createServerOnPort(port1);
+// Démarrez le serveur sur le port
 createServerOnPort(port2);

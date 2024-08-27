@@ -7,11 +7,17 @@ const app = express();
 const bookRoutes = require("./routes/books.route.js");
 const userRoutes = require("./routes/user.route.js");
 
+// Load environment variables from a .env file
+require("dotenv").config();
+
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+
 // Connexion à MongoDB via Mongoose
 mongoose
   .connect(
     // Chaîne de connexion à MongoDB Atlas, en utilisant les informations d'identification stockées
-    "mongodb+srv://Admin00:8HqQXYDS89CBDdry@cluster0.zpvrw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    `mongodb+srv://${dbUser}:${dbPassword}@cluster0.zpvrw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
   )
   // Gestion de la promesse retournée par la connexion à MongoDB
   .then(() => console.log("Connexion à MongoDB réussie !")) // Si la connexion réussit

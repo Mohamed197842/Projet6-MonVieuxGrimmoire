@@ -12,11 +12,10 @@ const normalizePort = (val) => {
   return false;
 };
 
-// Configurez les ports sur lesquels vous souhaitez écouter
-const port1 = normalizePort(process.env.PORT1 || "3000");
-const port2 = normalizePort(process.env.PORT2 || "4000");
+// Configuration du port sur lequel on va ecouter
+const port = normalizePort(process.env.PORT2 || "4000");
 
-app.set("port", port1); // ou "port", port2 si vous avez besoin d'utiliser ce réglage ailleurs
+app.set("port", port);
 
 const errorHandler = (error, port) => {
   if (error.syscall !== "listen") {
@@ -37,20 +36,14 @@ const errorHandler = (error, port) => {
   }
 };
 
-// Créez une fonction pour démarrer un serveur sur un port spécifique
-const createServerOnPort = (port) => {
-  const server = http.createServer(app);
+// Créez et démarrez le serveur sur le port 4000
+const server = http.createServer(app);
 
-  server.on("error", (error) => errorHandler(error, port));
-  server.on("listening", () => {
-    const address = server.address();
-    const bind =
-      typeof address === "string" ? "pipe " + address : "port " + port;
-    console.log("Listening on " + bind);
-  });
+server.on("error", (error) => errorHandler(error, port));
+server.on("listening", () => {
+  const address = server.address();
+  const bind = typeof address === "string" ? "pipe " + address : "port " + port;
+  console.log("Listening on " + bind);
+});
 
-  server.listen(port);
-};
-
-// Démarrez le serveur sur le port
-createServerOnPort(port2);
+server.listen(port);

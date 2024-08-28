@@ -16,8 +16,8 @@ const multer = require("../middlewares/multer-config");
 const sharp = require("../middlewares/sharp");
 
 router.get("/", getAllBooks);
-router.get("/:id", getOneBook);
 router.get("/bestrating", getBestRating);
+router.get("/:id", getOneBook);
 
 router.post("/", auth, multer, sharp, createBook);
 router.post("/:id/rating", auth, postRating);

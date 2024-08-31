@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
-// Ce plugin Mongoose approprié est utilisé pour garantir l'unicité et signaler les erreurs
+// Ce plugin Mongoose est utilisé pour garantir l'unicité des adresses utilisés et signaler les erreurs
 userSchema.plugin(uniqueValidator);
 
-// Exportation du modèle Book basé sur le schéma
-module.exports = mongoose.model("user", userSchema);
+// Exportation du modèle User basé sur le schéma
+module.exports = mongoose.model("User", userSchema);

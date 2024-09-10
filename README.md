@@ -14,7 +14,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur v
 
 Avec la commande "npm install"
 
-Voici les dépendances principales utilisées dans le projet : 
+Installer les dépendances principales utilisées dans le projet : 
 
 - `bcrypt` / `bcryptjs` : Hachage des mots de passe
 - `dotenv` : Gestion des variables d'environnement

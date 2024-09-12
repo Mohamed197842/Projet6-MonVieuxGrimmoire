@@ -2,21 +2,33 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+require("dotenv").config(); // Charge les variables d'environnement
+
+// Ajoute le log pour vérifier si la variable est bien chargée
+console.log("Secret Token:", process.env.SECRET_TOKEN);
+
+// Fonction pour l'inscription
 exports.signUp = async (req, res) => {
   try {
-    const hash = await bcrypt.hash(req.body.password, 10); // Hachage du mot de passe
+    // Hachage du mot de passe
+    const hash = await bcrypt.hash(req.body.password, 10);
     const user = new User({
       email: req.body.email,
       password: hash,
     });
 
-    await user.save(); // Enregistrement de l'utilisateur
+    // Sauvegarde de l'utilisateur
+    await user.save();
     res.status(201).json({ message: "Utilisateur créé !" });
   } catch (error) {
-    res.status(500).json({ error });
+    // Message d'erreur plus générique
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la création de l'utilisateur." });
   }
 };
 
+// Fonction pour la connexion
 exports.login = async (req, res) => {
   try {
     // Recherche de l'utilisateur par email
@@ -42,12 +54,12 @@ exports.login = async (req, res) => {
     // Si l'authentification est réussie
     res.status(200).json({
       userId: user._id,
-      token: jwt.sign({ userId: user._id }, "RANDOM_SECRET_TOKEN", {
+      token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
         expiresIn: "24h",
       }),
     });
   } catch (error) {
-    // Gestion des erreurs
-    res.status(500).json({ error });
+    // Message d'erreur plus générique
+    res.status(500).json({ error: "Erreur lors de la connexion." });
   }
 };

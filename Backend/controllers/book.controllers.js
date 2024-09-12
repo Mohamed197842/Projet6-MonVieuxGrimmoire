@@ -155,54 +155,48 @@ const deleteBook = async (req, res) => {
   }
 };
 
-// Noter un livre
+// Fonction pour ajouter une note à un livre
 const postRating = async (req, res) => {
   try {
     const { userId, rating } = req.body;
 
-    // Vérifiez si l'utilisateur est autorisé
+    // Vérifie que l'utilisateur est authentifié
     if (userId !== req.auth.userId) {
       return res.status(401).json({ message: "Non autorisé" });
     }
 
-    // Vérifiez que la note est entre 0 et 5
+    // Vérifie que la note est entre 0 et 5
     if (rating < 0 || rating > 5) {
       return res
         .status(400)
-        .json({ error: "La note doit être un nombre entre 0 et 5." });
+        .json({ error: "La note doit être comprise entre 0 et 5." });
     }
 
-    // Trouvez le livre par son ID
+    // Recherche du livre par ID
     const book = await Book.findById(req.params.id);
     if (!book) {
       return res.status(404).json({ error: "Livre non trouvé." });
     }
 
-    // Vérifiez si l'utilisateur a déjà noté ce livre
-    const userRating = book.ratings.find((rating) => rating.userId === userId);
-    if (userRating) {
-      return res
-        .status(400)
-        .json({ error: "L'utilisateur a déjà noté ce livre." });
+    // Vérifie si l'utilisateur a déjà noté ce livre
+    const existingRating = book.ratings.find((r) => r.userId === userId);
+    if (existingRating) {
+      return res.status(400).json({ error: "Vous avez déjà noté ce livre." });
     }
 
-    // Ajoutez la note à la liste des évaluations
+    // Ajout de la note dans le tableau des évaluations
     book.ratings.push({ userId, grade: rating });
 
-    // Calculez la nouvelle note moyenne
+    // Mise à jour de la note moyenne
     const totalRatings = book.ratings.length;
-    const sumRatings = book.ratings.reduce(
-      (sum, rating) => sum + rating.grade,
-      0
-    );
-    const averageRating = sumRatings / totalRatings;
-    book.averageRating = averageRating;
+    const sumRatings = book.ratings.reduce((sum, r) => sum + r.grade, 0);
+    book.averageRating = sumRatings / totalRatings;
 
-    // Sauvegardez les modifications
+    // Sauvegarde du livre mis à jour
     const updatedBook = await book.save();
-    res.status(200).json(updatedBook);
+    return res.status(200).json(updatedBook);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 

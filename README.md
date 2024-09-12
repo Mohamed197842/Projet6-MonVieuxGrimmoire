@@ -9,29 +9,14 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur v
 - [Node.js](https://nodejs.org/en/download/) (v14+ recommandé)
 - [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/) pour la gestion des dépendances
 
-
 ## Dépendances
 
-Avec la commande "npm install"
+### Avec npm
 
-Installer les dépendances principales utilisées dans le projet : 
+Faites la commande `npm install` pour installer les dépendances utilisé dans ce projet.
 
-- `bcrypt` / `bcryptjs` : Hachage des mots de passe
-- `dotenv` : Gestion des variables d'environnement
-- `express` : Framework web minimaliste pour créer le serveur
-- `jsonwebtoken` : Gestion des tokens JWT pour l'authentification
-- `mongodb` : Base de données NoSQL MongoDB
-- `mongoose` : Gestion des schémas et modèles MongoDB
-- `mongoose-unique-validator` : Validation d'unicité pour les schémas Mongoose
-- `multer` : Gestion des uploads de fichiers
-- `sharp` : Traitement des images (redimensionnement, compression)
-- `nodemon` : Outil de développement pour redémarrer automatiquement le serveur lors de modifications
+## Lancer l'application
 
-  ## Lancer l'application
-
-1. Démarrez le serveur en mode développement avec la commande `nodemon` :
-
-```bash
-nodemon server
+1. Démarrez le serveur en mode développement avec la commande `nodemon server` :
 
 Le serveur sera lancé par défaut sur http://localhost:4000.
